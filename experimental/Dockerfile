@@ -4,7 +4,7 @@ MAINTAINER SolidRhino
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV AIRVPN_VERSION experimental
-ENV AIRVPN_SHA256 55cfa7be46aa35334e5d021312b5b0d33bbc226fd080d2fc1ad2848e29ad33b0
+ENV AIRVPN_SHA256 81e1fdfe492aad8c7d2cf5b3b1aea83d7bc2f42679ea825a18d48f42155daea4
 
 # Update apt-get
 RUN apt-get update \
