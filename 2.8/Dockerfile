@@ -1,15 +1,29 @@
-FROM alpine:latest
+FROM mono:4
 
 MAINTAINER SolidRhino
 
-ENV AIRVPN_VERSION = 2.8
-ENV AIRVPN_SHA1 = 7a97ba5b835dde72e1c18c51aa3f884c56a6926c
+ENV DEBIAN_FRONTEND noninteractive
+ENV AIRVPN_VERSION 2.8
+ENV AIRVPN_SHA256 6b7f1e31a847a4bec650825da99b8d93fe6e4b256167ce9446a921691830483c
 
-RUN apk add --update curl ca-certificates gzip && rm -rf /var/cache/apk/* \
-    && curl -o airvpn.tar.gz -SL "https://airvpn.org/repository/${AIRVPN_VERSION}/airvpn_linux_x64_portable.tar.gz" \
-    && echo "$AIRVPN_SHA1 *airvpn.tar.gz" | sha1sum -c - \
-    && tar xzf airvpn.tar.gz \
-    && rm airvpn.tar.gz
+# Update apt-get
+RUN apt-get update \
 
-ENTRYPOINT ["airvpn"]
+# Install ca-certificates and curl
+    && apt-get install -y --no-install-recommends \
+        ca-certificates \
+        curl \
+# Download airvpn, check download and extract tar.gz file
+    && curl -fSL -o airvpn.tar.gz "https://airvpn.org/repository/${AIRVPN_VERSION}/airvpn_linux_x64_portable.tar.gz" \
+    && echo "$AIRVPN_SHA256 *airvpn.tar.gz" | sha256sum -c - \
+    && tar xvfz airvpn.tar.gz \
+# Cleanup
+    && rm -rf airvpn.tar.gz \
+    && apt-get remove -y \
+        ca-certificates \
+        curl \
+    && apt-get autoremove -y \
+    && rm -rf /var/lib/apt/lists/*
+
+ENTRYPOINT ["/airvpn_linux_x64_portable/airvpn", "--cli"]
 CMD ["--help"]
