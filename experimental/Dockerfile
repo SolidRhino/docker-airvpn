@@ -23,6 +23,7 @@ RUN apt-get update \
     && apt-get remove -y \
         ca-certificates \
         curl \
+        ifconfig \
     && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/*
 
