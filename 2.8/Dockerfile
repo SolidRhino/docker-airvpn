@@ -14,7 +14,7 @@ RUN apt-get update \
         ca-certificates \
         curl \
         ssh \
-        ifconfig \
+        net-tools \
 # Download airvpn, check download and extract tar.gz file
     && curl -fSL -o airvpn.tar.gz "https://airvpn.org/repository/${AIRVPN_VERSION}/airvpn_linux_x64_portable.tar.gz" \
     && echo "$AIRVPN_SHA256 *airvpn.tar.gz" | sha256sum -c - \
